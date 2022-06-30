@@ -11,29 +11,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: application
-          path: .
+          cache: 'npm'
+      - run: npm ci
         
   test:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          name: application
+          cache: 'npm'
+      - run: npm ci
       - name: Test
         run: npm run test
         
@@ -41,10 +35,13 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          name: application
+          cache: 'npm'
+      - run: npm ci
       - name: Lint
         run: npm run lint
         
@@ -52,12 +49,15 @@ jobs:
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          name: application
+          cache: 'npm'
+      - run: npm ci
       - name: Build
-        run: npm run build
+        run: npm run build:ci
     
 
 # Steps
