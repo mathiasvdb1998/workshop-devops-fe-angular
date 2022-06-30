@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "d-stop": "docker stop workshop && docker container rm workshop",
+    "d-run": "npm run build && docker build . -t workshop/angular && docker run --name workshop -d -p 80:80 -v ~/Projects/Axxes/frontend-devops-workshop/workshop-devops-fe-angular/config:/usr/share/nginx/html/config workshop/angular"
   },
   "private": true,
   "dependencies": {
