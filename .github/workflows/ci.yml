@@ -14,6 +14,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
+          version: 16
           cache: 'npm'
       - run: npm ci
         
@@ -26,6 +27,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
+          version: 16
           cache: 'npm'
       - run: npm ci
       - name: Test
@@ -40,6 +42,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
+          version: 16
           cache: 'npm'
       - run: npm ci
       - name: Lint
@@ -54,6 +57,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
+          version: 16
           cache: 'npm'
       - run: npm ci
       - name: Build
