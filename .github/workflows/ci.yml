@@ -31,7 +31,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Test
-        run: npm run test
+        run: npm run test:ci
         
   lint:
     needs: install
