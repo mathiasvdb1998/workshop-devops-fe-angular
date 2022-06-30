@@ -3,11 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
-interface Config {
-  name: string;
-  showButton: boolean;
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,16 +10,9 @@ interface Config {
 })
 export class AppComponent {
   title = 'workshop-devops-fe-angular';
-  name$: Observable<string>;
-  showButton$: Observable<boolean>;
+  text$: Observable<string>;
 
   constructor(http: HttpClient) {
-    const config$: Observable<Config> = http.get<Config>('/config/config.json');
-    this.name$ = config$.pipe(map(c => c.name));
-    this.showButton$ = config$.pipe(map(c => c.showButton));
-  }
-
-  handleClick(): void {
-    alert('ANGULAR RULEZ!');
+    this.text$ = http.get<{text: string}>('http://localhost:8080').pipe(map(res => res.text));
   }
 }
