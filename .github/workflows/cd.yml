@@ -8,6 +8,25 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: dawidd6/action-download-artifacts@v2
+        with:
+          workflow: ci.yml
+          workflow_conclusion: success
+          name: build
+          
+      - name: Deploy
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: hg-pages
+          build_dir: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    
 # 1. Download artifact
 # 2. Deploy to github pages
 
