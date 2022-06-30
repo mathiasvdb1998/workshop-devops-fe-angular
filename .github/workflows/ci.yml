@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - pipeline*
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          name: application
+          path: .
+        
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifacts@v3
+        with:
+          name: application
+      - name: Test
+        run: npm run test
+        
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifacts@v3
+        with:
+          name: application
+      - name: Lint
+        run: npm run lint
+        
+  build:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifacts@v3
+        with:
+          name: application
+      - name: Build
+        run: npm run build
+    
+
+# Steps
+# 1. Make sure dependencies are installed
+#   - Optionally cache dependencies
+# 2. Test and lint the application
+#    - This can be run in parallel
+# 3. If the testing and linting succeeds create production distribution
+# 4. Upload the artifacts
+
+# Create a separate workflow to deploy the app or add CD step here
+
+# Useful actions
+# actions/setup-node@v3
+# actions/checkout@v3
+# actions/setup-node@v3
+# actions/upload-artifact@v3
